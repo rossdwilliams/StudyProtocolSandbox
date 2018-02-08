@@ -49,7 +49,7 @@ fitRFPredictionModels <- function(workFolder){
                                                                      max_depth=c(4,10,17),
                                                                      varImp=T)#c(T,F))
             trainedModel <- PatientLevelPrediction::runPlp(population,plpData,
-                                                           modelSettings,
+                                                           modelSettings = modelSettings,
                                                            testSplit='time',
                                                            testFraction=0.25,
                                                            nfold=3,

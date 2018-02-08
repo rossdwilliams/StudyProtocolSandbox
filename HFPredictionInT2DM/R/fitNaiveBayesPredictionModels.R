@@ -41,7 +41,7 @@ fitNaiveBayesPredictionModels <- function(workFolder){
 
             modelSettings <- PatientLevelPrediction::setNaiveBayes()
             trainedModel <- PatientLevelPrediction::runPlp(population,plpData,
-                                                           modelSettings,
+                                                           modelSettings = modelSettings,
                                                            testSplit='time',
                                                            testFraction=0.25,
                                                            nfold=3,

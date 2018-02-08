@@ -80,18 +80,18 @@ fetchAllDataFromServer <- function(connectionDetails = connectionDetails,
 
     # insert the at risk cohort:
     flog.info('Inserting risk cohort into cohort table')
-    sql <- SqlRender::loadRenderTranslateSql('PTD.sql',
-                                             "LargeScalePrediction",
+    sql <- SqlRender::loadRenderTranslateSql('t2dm_narrow.sql',
+                                             "HFPredictionInT2DM",
                                              dbms = connectionDetails$dbms,
                                              oracleTempSchema = oracleTempSchema,
                                              cdm_database_schema = cdmDatabaseSchema,
                                              target_database_schema = workDatabaseSchema,
                                              target_cohort_table = studyCohortTable,
-                                             target_cohort_id = 2788)
+                                             target_cohort_id = 109)
     DatabaseConnector::executeSql(conn, sql, progressBar = TRUE, reportOverallTime = FALSE)
 
     # insert all the outcome cohorts
-    outcomes <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePrediction")
+    outcomes <- system.file("settings", "OutcomesOfInterest.csv", package = "HFPredictionInT2DM")
     outcomes <- read.csv(outcomes)
     nrOutcomes <- nrow(outcomes)
     flog.info(paste0('Inserting ',nrOutcomes,' outcomes into cohort table'))
@@ -99,7 +99,7 @@ fetchAllDataFromServer <- function(connectionDetails = connectionDetails,
     for(i in 1:nrOutcomes){
         flog.info(paste0('Inserting ', outcomes$name[i],' (',i,'/',nrOutcomes,')'))
         sql <- SqlRender::loadRenderTranslateSql(paste0(outcomes[i,2],'.sql'),
-                                                 "LargeScalePrediction",
+                                                 "HFPredictionInT2DM",
                                                  dbms = connectionDetails$dbms,
                                                  oracleTempSchema = oracleTempSchema,
                                                  cdm_database_schema = cdmDatabaseSchema,
@@ -110,7 +110,7 @@ fetchAllDataFromServer <- function(connectionDetails = connectionDetails,
     }
 
     # load the covariateSettings
-    pathToSettings <- system.file("settings", "covariateSettings.R", package = "LargeScalePrediction")
+    pathToSettings <- system.file("settings", "covariateSettings.R", package = "HFPredictionInT2DM")
     source(pathToSettings)
 
     # get the plpData
@@ -118,7 +118,7 @@ fetchAllDataFromServer <- function(connectionDetails = connectionDetails,
     plpData <- PatientLevelPrediction::getPlpData(connectionDetails=connectionDetails,
                                                   cdmDatabaseSchema=cdmDatabaseSchema,
                                                   oracleTempSchema=oracleTempSchema,
-                                                  cohortId=2788, #need to create this
+                                                  cohortId=109, #need to create this
                                                   outcomeIds=outcomes[,1],
                                                   cohortDatabaseSchema=workDatabaseSchema,
                                                   cohortTable=studyCohortTable,

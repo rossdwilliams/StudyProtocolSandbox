@@ -43,8 +43,8 @@ fitLassoPredictionModels <- function(workFolder){
 
           modelSettings <- PatientLevelPrediction::setLassoLogisticRegression()
           trainedModel <- PatientLevelPrediction::runPlp(population,plpData,
-                                                         modelSettings,
-                                                         testSplit='time',
+                                                         modelSettings = modelSettings,
+                                                         testSplit='person',
                                                          testFraction=0.25,
                                                          nfold=3,
                                                          save=NULL

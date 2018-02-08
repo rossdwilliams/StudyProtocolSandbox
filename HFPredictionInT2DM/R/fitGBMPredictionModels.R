@@ -42,11 +42,9 @@ fitGBMPredictionModels <- function(workFolder){
             #attr(population, "metaData")$cohortId <- plpData$metaData$call$cohortId
             #attr(population, "metaData")$outcomeId <- oid
 
-            modelSettings <- PatientLevelPrediction::setGradientBoostingMachine(ntrees=c(50,100,250),
-                                                                                max_depth = c(4,7,16),
-                                                                                min_rows = c(1,20))
+            modelSettings <- PatientLevelPrediction::setGradientBoostingMachine()
             trainedModel <- PatientLevelPrediction::runPlp(population,plpData,
-                                                           modelSettings,
+                                                           modelSettings = modelSettings,
                                                            testSplit='time',
                                                            testFraction=0.25,
                                                            nfold=3,

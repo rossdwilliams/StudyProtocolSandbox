@@ -42,7 +42,7 @@ fitKNNPredictionModels <- function(workFolder){
             modelSettings <- PatientLevelPrediction::setKNN(k=10000, file.path(workFolder,'models', 'knnModels', 'knn'))
 
             trainedModel <- PatientLevelPrediction::runPlp(population,plpData,
-                                                           modelSettings,
+                                                           modelSettings = modelSettings,
                                                            testSplit='time',
                                                            testFraction=0.25,
                                                            nfold=3,
