@@ -1,0 +1,5 @@
+5779 [PR] Heart failure prediction in T2DM (O2-Diastolic HF) V2
+5778 [PR] Heart failure prediction in T2DM (O2-Systolic HF) v2
+5617 [PR] Heart failure prediction in T2DM (O1-Any HF)
+5769 [PR] Heart failure prediction in T2DM (T1-broad) no Hist HF
+5796 [PR] Heart failure prediction in T2DM (T2-narrow) V3
