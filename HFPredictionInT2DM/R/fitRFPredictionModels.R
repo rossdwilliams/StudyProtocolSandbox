@@ -31,9 +31,9 @@
 #' Returns TRUE when finished and saves the models  into the workFolder directory
 #' in the subdirectory named rfModels
 #' @export
-fitRFPredictionModels <- function(workFolder){
+fitRFPredictionModels <- function(workFolder, plpData, population){
 
-    plpData <- PatientLevelPrediction::loadPlpData(file.path(workFolder, 'data'))
+    # plpData <- PatientLevelPrediction::loadPlpData(file.path(workFolder, 'data'))
 
     #outcomeIds <- plpData$metaData$call$outcomeIds
     outcomes <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePrediction")
@@ -42,12 +42,9 @@ fitRFPredictionModels <- function(workFolder){
 
     for(oid in outcomeIds){
         tryCatch({
-            population <- readRDS(file.path(workFolder, 'Populations',paste0(oid,'.rds')))
+            # population <- readRDS(file.path(workFolder, 'Populations',paste0(oid,'.rds')))
 
-            modelSettings <- PatientLevelPrediction::setRandomForest(ntrees=c(50,500,1000),
-                                                                     mtries = c(-1,50,500),
-                                                                     max_depth=c(4,10,17),
-                                                                     varImp=T)#c(T,F))
+            modelSettings <- PatientLevelPrediction::setRandomForest()
             trainedModel <- PatientLevelPrediction::runPlp(population,plpData,
                                                            modelSettings = modelSettings,
                                                            testSplit='time',

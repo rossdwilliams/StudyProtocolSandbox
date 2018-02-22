@@ -31,13 +31,13 @@
 #' Returns TRUE when finished and saves the models  into the workFolder directory
 #' in the subdirectory named knnModels
 #' @export
-fitKNNPredictionModels <- function(workFolder){
-    plpData <- PatientLevelPrediction::loadPlpData(file.path(workFolder, 'data'))
+fitKNNPredictionModels <- function(workFolder, plpData, population){
+    # plpData <- PatientLevelPrediction::loadPlpData(file.path(workFolder, 'data'))
 
     outcomeIds <- plpData$metaData$call$outcomeIds
     for(oid in outcomeIds){
         tryCatch({
-            population <- readRDS(file.path(workFolder, 'Populations',paste0(oid,'.rds')))
+            # population <- readRDS(file.path(workFolder, 'Populations',paste0(oid,'.rds')))
 
             modelSettings <- PatientLevelPrediction::setKNN(k=10000, file.path(workFolder,'models', 'knnModels', 'knn'))
 

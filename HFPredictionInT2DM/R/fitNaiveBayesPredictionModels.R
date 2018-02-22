@@ -31,13 +31,13 @@
 #' Returns TRUE when finished and saves the models  into the workFolder directory
 #' in the subdirectory named nbModels
 #' @export
-fitNaiveBayesPredictionModels <- function(workFolder){
-    plpData <- PatientLevelPrediction::loadPlpData(file.path(workFolder, 'data'))
+fitNaiveBayesPredictionModels <- function(workFolder, plpData, population){
+    # plpData <- PatientLevelPrediction::loadPlpData(file.path(workFolder, 'data'))
 
     outcomeIds <- plpData$metaData$call$outcomeIds
     for(oid in outcomeIds){
         tryCatch({
-            population <- readRDS(file.path(workFolder, 'Populations',paste0(oid,'.rds')))
+            # population <- readRDS(file.path(workFolder, 'Populations',paste0(oid,'.rds')))
 
             modelSettings <- PatientLevelPrediction::setNaiveBayes()
             trainedModel <- PatientLevelPrediction::runPlp(population,plpData,

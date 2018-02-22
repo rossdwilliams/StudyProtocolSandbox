@@ -33,8 +33,8 @@
 createSummary <- function(workFolder){
     # find all the models
     locations <- list.dirs(workFolder, full.names = FALSE)[grep('/model$', list.dirs(workFolder))]
-    locations <- gsub('/model','', locations)
-
+    # locations <- gsub('\\models', '', locations)
+    locations <- gsub('model$','', locations)
     # for each outcome extract the testEvaluationStatistics and trainEvaluationStatistics
     # from the evaluation folder
 
@@ -53,21 +53,23 @@ createSummary <- function(workFolder){
             testRes$'AUC.auc_lb95ci.1' <- NULL
         names(testRes) <- paste0('test_',names(testRes))
 
-        result <- c(model = result$inputSetting$modelSettings$model,
+        results <- c(model = result$inputSetting$modelSettings$model,
+          targetId = result$inputSetting$populationSettings$cohortId,
           outcomeId = result$inputSetting$populationSettings$outcomeId,
           trainRes, testRes)
 
-        return(result)
+        return(results)
     }
 
 
     completeSummary <- t(sapply(file.path(workFolder,locations), getDetails))
-    outcomes <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePrediction")
-    outcomes <- read.csv(outcomes)
-    completeSummary <- merge(outcomes, completeSummary, by.x='cohortDefinitionId',
-                             by.y='outcomeId')
+    # outcomes <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePrediction")
+    # outcomes <- read.csv(outcomes)
+    # completeSummary <- merge(outcomes, completeSummary, by.x='cohortDefinitionId',
+                             # by.y='outcomeId')
+    results_to_save <- ldply(completeSummary, data.frame)
 
-    write.csv(completeSummary, file.path(workFolder, 'summary.csv'))
+    write.csv(results_to_save, file.path(workFolder, 'summary.csv'))
 
     return(TRUE)
 }

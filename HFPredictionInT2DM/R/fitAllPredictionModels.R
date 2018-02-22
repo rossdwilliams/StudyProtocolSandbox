@@ -31,32 +31,32 @@
 #' Returns TRUE when finished and saves the models into the workFolder directory
 #' in the subdirectory named models
 #' @export
-fitAllPredictionModels <- function(workFolder,
+fitAllPredictionModels <- function(workFolder, plpData, population,
                                    verbosity=INFO){
 
     flog.seperator()
     flog.info('Fitting models')
     flog.seperator()
 
-    # add log starting lasso regularised logistic regression
-    flog.info('Fitting lasso regularised logistic regression')
-    fitLassoPredictionModels(file.path(workFolder))
+    # # add log starting lasso regularised logistic regression
+    # flog.info('Fitting lasso regularised logistic regression')
+    # fitLassoPredictionModels(file.path(workFolder), plpData, population)
 
     # add log starting gbm model
     flog.info('Fitting GBM ')
-    fitGBMPredictionModels(file.path(workFolder))
-
-    # add log starting random forest
-    flog.info('Fitting random forest ')
-    fitRFPredictionModels(file.path(workFolder))
+    fitGBMPredictionModels(file.path(workFolder), plpData, population)
 
     # add log starting naive bayes
-    flog.info('Fitting naive bayes ')
-    fitNaiveBayesPredictionModels(file.path(workFolder))
+    # flog.info('Fitting naive bayes ')
+    # fitNaiveBayesPredictionModels(file.path(workFolder), plpData, population)
+
+    # # add log starting random forest
+    # flog.info('Fitting random forest ')
+    # fitRFPredictionModels(file.path(workFolder), plpData, population)
 
     # add log starting knn
-    flog.info('Fitting KNN ')
-    fitKNNPredictionModels(file.path(workFolder))
+    # flog.info('Fitting KNN ')
+    # fitKNNPredictionModels(file.path(workFolder), plpData, population)
 
     return(TRUE)
 

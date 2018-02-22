@@ -31,14 +31,14 @@
 #' Returns TRUE when finished and saves the models  into the workFolder directory
 #' in the subdirectory named lrModels
 #' @export
-fitLassoPredictionModels <- function(workFolder){
+fitLassoPredictionModels <- function(workFolder, plpData, population){
 
-    plpData <- PatientLevelPrediction::loadPlpData(file.path(workFolder, 'data'))
+    # plpData <- PatientLevelPrediction::loadPlpData(file.path(workFolder, 'data'))
 
     outcomeIds <- plpData$metaData$call$outcomeIds
     for(oid in outcomeIds){
       tryCatch({
-          population <- readRDS(file.path(workFolder, 'Populations',paste0(oid,'.rds')))
+          # population <- population #readRDS(file.path(workFolder, 'Populations',paste0(oid,'.rds')))
 
 
           modelSettings <- PatientLevelPrediction::setLassoLogisticRegression()
