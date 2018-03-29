@@ -32,44 +32,66 @@
 #' @export
 createSummary <- function(workFolder){
     # find all the models
-    locations <- list.dirs(workFolder, full.names = FALSE)[grep('/model$', list.dirs(workFolder))]
-    # locations <- gsub('\\models', '', locations)
-    locations <- gsub('model$','', locations)
-    # for each outcome extract the testEvaluationStatistics and trainEvaluationStatistics
-    # from the evaluation folder
 
+    extLocations <- list.files(workFolder, full.names = T, recursive = T)[grep('*erformanceEvaluation.rds', list.files(workFolder, recursive = T))]
+    extLocations <- extLocations[c(grep('lrModels',extLocations), grep('gbmModels',extLocations))]
     getDetails<- function(location){
-        result <- PatientLevelPrediction::loadPlpResult(location)
-        trainRes <- result$performanceEvaluation$evaluationStatistics[result$performanceEvaluation$evaluationStatistics[, 'Eval']=='train','Value']
-        if(sum(names(trainRes)%in%c('AUC.auc_lb95ci'))<1)
-            trainRes$AUC.auc_lb95ci <- NULL
-        if(sum(names(trainRes)%in%c('AUC.auc_lb95ci.1'))<1)
-            trainRes$'AUC.auc_lb95ci.1' <- NULL
-        names(trainRes) <- paste0('train_',names(trainRes))
-        testRes <- result$performanceEvaluation$evaluationStatistics[result$performanceEvaluation$evaluationStatistics[, 'Eval']=='test','Value']
-        if(sum(names(testRes)%in%c('AUC.auc_lb95ci'))<1)
-            testRes$AUC.auc_lb95ci <- NULL
-        if(sum(names(testRes)%in%c('AUC.auc_lb95ci.1'))<1)
-            testRes$'AUC.auc_lb95ci.1' <- NULL
-        names(testRes) <- paste0('test_',names(testRes))
+                result <- readRDS(location)
+                if (!grepl('externalPerformance',location)){
+                    location_clean <- (gsub('/performanceEvaluation.rds','',location))
+                    settings <- PatientLevelPrediction::loadPlpResult(location_clean)
 
-        results <- c(model = result$inputSetting$modelSettings$model,
-          targetId = result$inputSetting$populationSettings$cohortId,
-          outcomeId = result$inputSetting$populationSettings$outcomeId,
-          trainRes, testRes)
+                    extRes <- result$evaluationStatistics[result$evaluationStatistics[, 'Eval']=='test','Value']
+                    extRes$AUC.auc_lb95ci <- 0
 
-        return(results)
-    }
+                    extRes$AUC.auc_ub95ci <- 0
+                    model_db <- settings$model$model_db
+                    # extRes$CalibrationIntercept <- extRes$CalibrationIntercept[['Intercept']]
+                    # extRes$CalibrationSlope <-  extRes$CalibrationSlope[['Gradient']]
+                    #discuss with peter the best way to do this
+                    results <- c(model = settings$inputSetting$modelSettings$model,
+                                 targetId = settings$inputSetting$populationSettings$cohortId,
+                                 outcomeId = settings$inputSetting$populationSettings$outcomeId,
+                                 model_db = model_db,
+                                 ext_db = model_db,
+                                 extRes)
+                    results <- unlist(results, recursive = TRUE, use.names = TRUE)
+
+                    # results <- data.frame(results)
+                    # return(results)
+
+                } else{
+                    location_clean <- (gsub('/model/\\w+PerformanceEvaluation.rds','',location))
+                    settings <- PatientLevelPrediction::loadPlpResult(location_clean)
+                    extRes <- result$evaluationStatistics
+                    if(sum(names(extRes)%in%c('AUC.auc_lb95ci'))<1)
+                        extRes$AUC$auc_lb95ci <- NULL
+                    if(sum(names(extRes)%in%c('AUC.auc_lb95ci.1'))<1)
+                        extRes$AUC$auc_lb95ci.1 <- NULL
+                    # extRes$CalibrationIntercept <- extRes$CalibrationIntercept[['Intercept']]
+                    # extRes$CalibrationSlope <-  extRes$CalibrationSlope[['Gradient']]
+                    if(length(names(extRes$AUC))){
+                        extRes$AUC <- extRes$AUC[[1]]
+                    }
+                    extRes$AUC$auc_lb95ci <- 0
+                        extRes$AUC$auc_lb95ci.1 <- 0
+                    results <- c(model = settings$inputSetting$modelSettings$model,
+                                 targetId = settings$inputSetting$populationSettings$cohortId,
+                                 outcomeId = settings$inputSetting$populationSettings$outcomeId,
+                                 model_db = result$modelDb,
+                                 ext_db = result$externalDb,
+                                 extRes)
+                    results <- unlist(results, recursive = TRUE, use.names = TRUE)
+                    # results <- data.frame(results)
+                    return(results)
+                    }
+            }
+
+        completeExtSummary <- sapply(file.path(extLocations), getDetails)
+        t_comp_ext <- t(completeExtSummary)
 
 
-    completeSummary <- t(sapply(file.path(workFolder,locations), getDetails))
-    # outcomes <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePrediction")
-    # outcomes <- read.csv(outcomes)
-    # completeSummary <- merge(outcomes, completeSummary, by.x='cohortDefinitionId',
-                             # by.y='outcomeId')
-    results_to_save <- ldply(completeSummary, data.frame)
-
-    write.csv(results_to_save, file.path(workFolder, 'summary.csv'))
+    write.csv(t_comp_ext, file.path(workFolder, 'results/summary.csv'))
 
     return(TRUE)
 }
