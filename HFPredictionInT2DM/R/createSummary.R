@@ -46,8 +46,7 @@ createSummary <- function(workFolder){
 
                     extRes$AUC.auc_ub95ci <- 0
                     model_db <- settings$model$model_db
-                    # extRes$CalibrationIntercept <- extRes$CalibrationIntercept[['Intercept']]
-                    # extRes$CalibrationSlope <-  extRes$CalibrationSlope[['Gradient']]
+
                     #discuss with peter the best way to do this
                     results <- c(model = settings$inputSetting$modelSettings$model,
                                  targetId = settings$inputSetting$populationSettings$cohortId,

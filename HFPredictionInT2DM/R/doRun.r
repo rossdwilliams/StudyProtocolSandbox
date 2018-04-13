@@ -238,13 +238,14 @@ doRun <- function(cdmDatabaseSchema,model_db,targetCohortId,outcomeCohortId) {
 
 
     # # # Create the model settings ----
-    modelSettings <-
-        PatientLevelPrediction::setGradientBoostingMachine()
+    # modelSettings <-
+    #     PatientLevelPrediction::setGradientBoostingMachine()
 
 
     # Run the model ----
     setwd(outputFolder)  # why do I need to say this again?
     results <- PatientLevelPrediction::runPlp(
+        database = model_db,
         population = population,
         plpData = plpData,
         modelSettings = modelSettings,

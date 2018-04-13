@@ -38,11 +38,11 @@ fitAllPredictionModels <- function(workFolder, plpData, population,
     flog.info('Fitting models')
     flog.seperator()
 
-    # # add log starting lasso regularised logistic regression
+    # add log starting lasso regularised logistic regression
     # flog.info('Fitting lasso regularised logistic regression')
     # fitLassoPredictionModels(file.path(workFolder), plpData, population)
-
-    # add log starting gbm model
+    #
+    # # add log starting gbm model
     # flog.info('Fitting GBM ')
     # fitGBMPredictionModels(file.path(workFolder), plpData, population)
 
@@ -50,11 +50,11 @@ fitAllPredictionModels <- function(workFolder, plpData, population,
     # flog.info('Fitting naive bayes ')
     # fitNaiveBayesPredictionModels(file.path(workFolder), plpData, population)
 
-    # # add log starting random forest
+    # add log starting random forest
     flog.info('Fitting random forest ')
     fitRFPredictionModels(file.path(workFolder), plpData, population)
 
-    # add log starting knn
+    # # add log starting knn
     # flog.info('Fitting KNN ')
     # fitKNNPredictionModels(file.path(workFolder), plpData, population)
 
