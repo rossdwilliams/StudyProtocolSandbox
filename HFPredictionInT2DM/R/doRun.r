@@ -44,7 +44,7 @@ doRun <- function(cdmDatabaseSchema,model_db,targetCohortId,outcomeCohortId) {
     cohortTable <- "cohort"
     outcomeTable <- "cohort"
     cdmVersion <- "5"
-    outputFolder <- paste0("S:\\rwilliams\\HFinT2DM\\",model_db,"\\",targetCohortId,"-",outcomeCohortId)
+    outputFolder <-
     writeLines(paste0("outputFolder: ", outputFolder))
     plpDataSaveName <- 'data'
     if (!dir.exists(outputFolder)) {
