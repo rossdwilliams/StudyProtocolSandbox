@@ -36,3 +36,12 @@ externalValidation("S:/rwilliams/HFinT2DM", 'CCAE', 'MDCR', 5796, 5778)
 externalValidation("S:/rwilliams/HFinT2DM", 'CCAE', 'MDCD', 5796, 5778)
 externalValidation("S:/rwilliams/HFinT2DM", 'CCAE', 'MDCR', 5796, 5779)
 externalValidation("S:/rwilliams/HFinT2DM", 'CCAE', 'MDCD', 5796, 5779)
+
+externalValidation("S:/rwilliams/HFinT2DM/final", 'CCAE', 'MDCD', 6679, 6681)
+externalValidation("S:/rwilliams/HFinT2DM/final", 'CCAE', 'MDCR', 6679, 6681)
+
+externalValidation("S:/rwilliams/HFinT2DM/final", 'MDCD', 'CCAE', 6679, 6681)
+externalValidation("S:/rwilliams/HFinT2DM/final", 'MDCD', 'MDCR', 6679, 6681)
+
+externalValidation("S:/rwilliams/HFinT2DM/final", 'MDCR', 'CCAE', 6679, 6681)
+externalValidation("S:/rwilliams/HFinT2DM/final", 'MDCR', 'MDCD', 6679, 6681)

@@ -35,7 +35,7 @@
 externalValidation <- function(workFolder, model_db, other_db, targetId, outcomeId  ){
 
         # get the data
-        data_path <- file.path(workFolder, other_db, paste(targetId,outcomeId,sep = '-'))
+        data_path <- file.path(workFolder, other_db)
         print(data_path)
         plpdatasavename <- 'data'
         setwd(data_path)
@@ -66,7 +66,7 @@ externalValidation <- function(workFolder, model_db, other_db, targetId, outcome
 
 
         # get the model
-        model_path <- file.path(workFolder, model_db, paste(targetId, outcomeId, sep = '-'))
+        model_path <- file.path(workFolder, model_db)
         print(model_path)
         setwd(model_path)
         #TODO: sort this to make it parameters or auto for all files?
