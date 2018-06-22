@@ -45,8 +45,15 @@ createSummary <- function(workFolder){
                     extRes$AUC.auc_lb95ci <- 0
 
                     extRes$AUC.auc_ub95ci <- 0
-                    model_db <- settings$model$model_db
-
+                    if (grepl('CCAE', location_clean)){
+                        model_db <- 'CCAE'
+                    } else if (grepl('IPCI', location_clean)){
+                        model_db <- 'IPCI'
+                    } else if (grepl('MDCD', location_clean)){
+                        model_db <- 'MDCD'
+                    } else if (grepl('MDCR', location_clean)){
+                        model_db <- 'MDCR'
+                    }
                     #discuss with peter the best way to do this
                     results <- c(model = settings$inputSetting$modelSettings$model,
                                  targetId = settings$inputSetting$populationSettings$cohortId,
@@ -60,11 +67,17 @@ createSummary <- function(workFolder){
                     # return(results)
 
                 } else{
-                    location_clean <- (gsub('/model/\\w+PerformanceEvaluation.rds','',location))
+                    if (grepl('6681', location)){
+                        location_clean <- (gsub('/6681/\\w+PerformanceEvaluation.rds','/6681',location))
+                        } else if (grepl('173', location)){
+                        location_clean <- (gsub('/173/\\w+PerformanceEvaluation.rds','/173',location))
+                    }
+
                     settings <- PatientLevelPrediction::loadPlpResult(location_clean)
                     extRes <- result$evaluationStatistics
-                    if(sum(names(extRes)%in%c('AUC.auc_lb95ci'))<1)
+                    if(sum(names(extRes)%in%c('AUC.auc_lb95ci'))<1){
                         extRes$AUC$auc_lb95ci <- NULL
+                    }
                     if(sum(names(extRes)%in%c('AUC.auc_lb95ci.1'))<1)
                         extRes$AUC$auc_lb95ci.1 <- NULL
                     # extRes$CalibrationIntercept <- extRes$CalibrationIntercept[['Intercept']]
@@ -73,7 +86,7 @@ createSummary <- function(workFolder){
                         extRes$AUC <- extRes$AUC[[1]]
                     }
                     extRes$AUC$auc_lb95ci <- 0
-                        extRes$AUC$auc_lb95ci.1 <- 0
+                    extRes$AUC$auc_lb95ci.1 <- 0
                     results <- c(model = settings$inputSetting$modelSettings$model,
                                  targetId = settings$inputSetting$populationSettings$cohortId,
                                  outcomeId = settings$inputSetting$populationSettings$outcomeId,
@@ -89,8 +102,8 @@ createSummary <- function(workFolder){
         completeExtSummary <- sapply(file.path(extLocations), getDetails)
         t_comp_ext <- t(completeExtSummary)
 
-
-    write.csv(t_comp_ext, file.path(workFolder, 'results/summary.csv'))
-
+    outputTo <- file.path(workFolder, 'summary.csv')
+    write.csv(t_comp_ext, outputTo)
+    print(paste0("file output to ", outputTo))
     return(TRUE)
 }

@@ -79,7 +79,7 @@ externalValidation <- function(workFolder, model_db, other_db, targetId, outcome
 
             #make the prediction
             prediction <- plpModel$predict(plpData = plpData, population = population)
-
+            PatientLevelPrediction::savePrediction(prediction, file.path(location, paste0(model_db,'_',other_db,'_pred')))
             #evaluate performance
             evaluation <- PatientLevelPrediction::evaluatePlp(prediction, plpData)
             evaluation$modelDb <- model_db
