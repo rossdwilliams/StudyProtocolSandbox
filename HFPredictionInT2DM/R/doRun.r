@@ -1,4 +1,4 @@
-doRun <- function(databaseSchema,model_db,targetCohortId,outcomeCohortId) {
+doRun <- function(databaseSchema,model_db,targetCohortId,outcomeCohortId, connectionDetails) {
 
     writeLines(
         paste0(
@@ -30,25 +30,7 @@ doRun <- function(databaseSchema,model_db,targetCohortId,outcomeCohortId) {
     # Data extraction ----
 
     # TODO: Insert your connection details here
-    connectionDetails <-
-        DatabaseConnector::createConnectionDetails(
-            dbms = "pdw",
-            server = "JRDUSAPSCTL01",
-            user = NULL,
-            password = NULL,
-            port = 17001
-        )
-    cdmDatabaseSchema <- paste0(databaseSchema, '.dbo')
-    cohortsDatabaseSchema <- paste0(databaseSchema, '.ohdsi_results')
-    cohortTable <- "cohort"
-    outcomeTable <- "cohort"
-    cdmVersion <- "5"
-    outputFolder <- paste0('S:\\rwilliams\\HFinT2DM\\final\\', model_db)
-    writeLines(paste0("outputFolder: ", outputFolder))
-    plpDataSaveName <- 'data'
-    if (!dir.exists(outputFolder)) {
-        dir.create(outputFolder, recursive = TRUE)
-    }
+
     setwd(outputFolder)
 
 
